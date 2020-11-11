@@ -2,7 +2,7 @@ package com.example.ocinefilo
 
 class RepositorioFilme {
     companion object {
-        fun createDataSete(): ArrayList<FilmeModel> {
+        fun createDataSet(): ArrayList<FilmeModel> {
             val list = ArrayList<FilmeModel>()
             list.add(
                 FilmeModel(
@@ -19,11 +19,11 @@ class RepositorioFilme {
                 )
             )
             list.add(
-                    FilmeModel(
-                        titulo = "Um dia de Chuva em Nova York",
-                        sinopse = "Apaixonado por Nova York, Gatsby (Timothée Chalamet) decide passar um fim de semana na cidade ao lado de Ashleigh (Elle Fanning), sua namorada. No entanto, aquilo que era pra ser uma aventura romântica acaba tomando um rumo inesperado. Aspirante a jornalista, Ashleigh conhece o diretor de cinema Roland Pollard (Liev Schreiber), que a convida para a exibição de seu mais recente trabalho. Gatsby, por sua vez, encontra Chan (Selena Gomez), a irmã mais nova de sua ex-namorada, com quem passa o restante da viagem. Um dia de chuva em Nova York será o suficiente para fazer com que Ashleigh redescubra suas verdadeiras paixões e Gatsby aprenda que só se vive uma vez - mas que é o suficiente se for ao lado da pessoa certa.",
-                        imagem = "https://capas-m.imagemfilmes.com.br/164862_000_m.jpg"
-                    )
+                FilmeModel(
+                    titulo = "Um dia de Chuva em Nova York",
+                    sinopse = "Apaixonado por Nova York, Gatsby (Timothée Chalamet) decide passar um fim de semana na cidade ao lado de Ashleigh (Elle Fanning), sua namorada. No entanto, aquilo que era pra ser uma aventura romântica acaba tomando um rumo inesperado. Aspirante a jornalista, Ashleigh conhece o diretor de cinema Roland Pollard (Liev Schreiber), que a convida para a exibição de seu mais recente trabalho. Gatsby, por sua vez, encontra Chan (Selena Gomez), a irmã mais nova de sua ex-namorada, com quem passa o restante da viagem. Um dia de chuva em Nova York será o suficiente para fazer com que Ashleigh redescubra suas verdadeiras paixões e Gatsby aprenda que só se vive uma vez - mas que é o suficiente se for ao lado da pessoa certa.",
+                    imagem = "https://capas-m.imagemfilmes.com.br/164862_000_m.jpg"
+                )
             )
             return list
         }
