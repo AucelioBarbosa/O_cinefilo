@@ -2,6 +2,7 @@ package com.example.ocinefilo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,8 +25,10 @@ class MainActivity : AppCompatActivity() {
     fun inicializandoRecycleView() {
 
         recycle_view.apply {
+
             val toSpacing = SpacingItem(30)
             addItemDecoration(toSpacing)
+            layoutManager = LinearLayoutManager(this@MainActivity)
             filmesAdapter = FilmesAdapter()
             adapter = filmesAdapter
         }
