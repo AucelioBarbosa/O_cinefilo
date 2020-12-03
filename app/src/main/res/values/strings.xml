@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Ocinefilo</string>
+    <string name="app_name">O Cinefilo</string>
+    <string name="btn_favorite">Meus favoritos</string>
+    <string name="btn_lista">Lista de Filmes</string>
 </resources>

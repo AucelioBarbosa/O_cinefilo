@@ -72,5 +72,6 @@ class FilmesAdapter(private val listener: FilmesAdapterInterface) :
 
     fun submitList(filmeList: List<FilmeModel>) {
         items = filmeList
+        notifyDataSetChanged()
     }
 }

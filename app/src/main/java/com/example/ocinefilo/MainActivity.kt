@@ -1,8 +1,8 @@
 package com.example.ocinefilo
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -10,17 +10,27 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
 
     private val filmesAdapter = FilmesAdapter(this)
     private var todosFilmes = listOf<FilmeModel>()
-    private val sharedPreferences by lazy { getSharedPreferences("FilmesPreferences", Context.MODE_PRIVATE) }
+    private val sharedPreferences by lazy {
+        getSharedPreferences(
+            "FilmesPreferences",
+            Context.MODE_PRIVATE
+        )
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
         inicializandoRecycleView()
         adicionarDataSet()
+
+        check_box.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                filterFavorite()
+            }else{
+                listfilme()
+            }
+        }
     }
 
     private fun adicionarDataSet() {
@@ -42,17 +52,25 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
     }
 
     override fun onFavorite(filmeModel: FilmeModel) {
-        todosFilmes.find { it.id == filmeModel.id}?.favorite = !filmeModel.favorite
+        todosFilmes.find { it.id == filmeModel.id }?.favorite = !filmeModel.favorite
         salvaFilmes(filmeModel.id)
     }
 
-    fun salvaFilmes (id: String){
+    fun filterFavorite() {
+        filmesAdapter.submitList(todosFilmes.filter { it.favorite })
+    }
+
+    fun listfilme() {
+        filmesAdapter.submitList(todosFilmes)
+    }
+
+    fun salvaFilmes(id: String) {
 
         sharedPreferences.edit().apply {
-            if(sharedPreferences.contains(id)){
+            if (sharedPreferences.contains(id)) {
                 remove(id)
-            }else{
-                putString(id,"")
+            } else {
+                putString(id, "")
             }
             apply()
         }
