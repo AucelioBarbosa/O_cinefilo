@@ -2,14 +2,15 @@ package com.example.ocinefilo
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.ocinefilo.mapper.FilmeMapper
+import com.example.ocinefilo.model.ResponseModel
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         inicializandoRecycleView()
-        adicionarDataSet()
+        fetchMovie()
 
         check_box.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
@@ -36,15 +37,6 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
                 listFilme()
             }
         }
-
-        fetchMovie()
-    }
-
-    private fun adicionarDataSet() {
-        val data: ArrayList<FilmeModel> = RepositorioFilme.createDataSet()
-        data.forEach { it.favorite = sharedPreferences.contains(it.id) }
-        filmesAdapter.submitList(data)
-        todosFilmes = data
     }
 
     fun inicializandoRecycleView() {
@@ -80,19 +72,23 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
         }
     }
 
-    fun fetchMovie(){
+    fun fetchMovie() {
         //chamada para lista de filmes 
         val queue = Volley.newRequestQueue(this)
-        val url = "http://www.omdbapi.com/?apikey=a320f108&type=movie&s=rock"
-
-        // Request a string response from the provided URL.
+        val url =
+            "https://api.themoviedb.org/3/search/movie?api_key=1d7044de1fdd2147a70cd2b3f764ca4c&language=en-US&query=rock&page=1&include_adult=false"
         val stringRequest = StringRequest(Request.Method.GET, url,
             Response.Listener<String> { response ->
-                println(response.toString())
+                val gson = Gson()
+                val result = gson.fromJson(response, ResponseModel::class.java)
+                val filmes = FilmeMapper.responseToModel(result.results)
+                filmes.forEach { it.favorite = sharedPreferences.contains(it.id) }
+                filmesAdapter.submitList(filmes)
+                todosFilmes = filmes
             },
             Response.ErrorListener {
-                println("erro!")})
-        // Add the request to the RequestQueue.
+                println("erro!")
+            })
         queue.add(stringRequest)
     }
 }
