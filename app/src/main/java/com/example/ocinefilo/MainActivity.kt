@@ -2,8 +2,14 @@ package com.example.ocinefilo
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
@@ -17,7 +23,6 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
         )
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,9 +33,11 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
             if(isChecked){
                 filterFavorite()
             }else{
-                listfilme()
+                listFilme()
             }
         }
+
+        fetchMovie()
     }
 
     private fun adicionarDataSet() {
@@ -38,7 +45,6 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
         data.forEach { it.favorite = sharedPreferences.contains(it.id) }
         filmesAdapter.submitList(data)
         todosFilmes = data
-
     }
 
     fun inicializandoRecycleView() {
@@ -52,7 +58,6 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
     }
 
     override fun onFavorite(filmeModel: FilmeModel) {
-        todosFilmes.find { it.id == filmeModel.id }?.favorite = !filmeModel.favorite
         salvaFilmes(filmeModel.id)
     }
 
@@ -60,12 +65,11 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
         filmesAdapter.submitList(todosFilmes.filter { it.favorite })
     }
 
-    fun listfilme() {
+    fun listFilme() {
         filmesAdapter.submitList(todosFilmes)
     }
 
     fun salvaFilmes(id: String) {
-
         sharedPreferences.edit().apply {
             if (sharedPreferences.contains(id)) {
                 remove(id)
@@ -76,5 +80,19 @@ class MainActivity : AppCompatActivity(), FilmesAdapter.FilmesAdapterInterface {
         }
     }
 
+    fun fetchMovie(){
+        //chamada para lista de filmes 
+        val queue = Volley.newRequestQueue(this)
+        val url = "http://www.omdbapi.com/?apikey=a320f108&type=movie&s=rock"
 
+        // Request a string response from the provided URL.
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            Response.Listener<String> { response ->
+                println(response.toString())
+            },
+            Response.ErrorListener {
+                println("erro!")})
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest)
+    }
 }

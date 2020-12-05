@@ -55,6 +55,7 @@ class FilmesAdapter(private val listener: FilmesAdapterInterface) :
             titulo_filme.setText(filmeBind.titulo)
             sinopse_filme.setText(filmeBind.sinopse)
             btn_favorite.setOnClickListener {
+                filmeBind.favorite = !filmeBind.favorite
                 listener.onFavorite(filmeBind)
                 if(filmeBind.favorite){
                     btn_favorite.setColorFilter(ContextCompat.getColor(context, R.color.red))
